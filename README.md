@@ -21,7 +21,16 @@ EmployeeAttendanceLogAnalyzer/
 │   ├── AttendanceLog.java
 │   ├── AttendanceComparator.java
 │   ├── AttendanceUI.java
-│   └── Main.java
+│   ├── Main.java
+│   ├── AttendanceServlet.java
+│   └── DatabaseHelper.java
+├── web/
+│   ├── index.jsp
+│   ├── logs.jsp
+│   ├── insert.jsp
+│   ├── result.jsp
+│   └── WEB-INF/
+│       └── web.xml
 └── README.md
 ```
 
@@ -36,6 +45,31 @@ cd EmployeeAttendanceLogAnalyzer
 javac -d out src/*.java
 java -cp out Main
 ```
+
+## Web App Version
+This repository now includes a simple Servlet/JSP web interface in the `web/` folder with JDBC insert support.
+
+### Requirements for Web App
+- A servlet container such as Apache Tomcat
+- Java 17 or later
+- SQLite JDBC driver jar (for example `sqlite-jdbc-3.41.2.1.jar`)
+
+### Deploy the Web App
+1. Compile the servlet classes and copy them to `web/WEB-INF/classes`.
+   ```bash
+   javac -d web/WEB-INF/classes -classpath "<TOMCAT_HOME>/lib/servlet-api.jar" src/*.java
+   ```
+2. Copy the contents of the `web/` folder into your servlet container's application directory.
+3. Place the SQLite JDBC jar into `WEB-INF/lib/`.
+4. Start Tomcat and navigate to `http://localhost:8080/<your-app-name>/`.
+
+### What the Web App Does
+- `index.jsp` provides buttons that submit to `AttendanceServlet`
+- `AttendanceServlet` forwards to `logs.jsp`, `insert.jsp`, or `result.jsp`
+- `DatabaseHelper` uses JDBC to insert attendance rows into `attendance.db`
+- `result.jsp` shows the insert result and saved rows
+
+> Note: the Swing desktop app still exists in `src/` and runs with `Main.java`.
 
 ## Expected Output
 A window opens titled **Employee Attendance Log Analyzer** with an empty table and four buttons:
